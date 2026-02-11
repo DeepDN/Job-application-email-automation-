@@ -1,0 +1,25 @@
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+logs/
+
+# Personal Data
+data/companies.xlsx
+
+# Resume Files
+resumes/*.pdf
+
+# Environment Variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
