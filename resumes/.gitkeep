@@ -1,0 +1,5 @@
+# This file ensures the resumes folder is tracked by git
+# Add your PDF resume files here:
+# - resume_devops.pdf
+# - resume_network.pdf
+# - resume_frontend.pdf (as needed)

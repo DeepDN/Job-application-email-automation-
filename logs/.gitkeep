@@ -1,0 +1,2 @@
+# This file ensures the logs folder is tracked by git
+# sent_log.csv will be automatically created here when emails are sent

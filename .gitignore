@@ -4,13 +4,13 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Logs
-logs/
+# Logs (keep folder, ignore contents)
+logs/*.csv
 
-# Personal Data
+# Personal Data (keep folder, ignore Excel file)
 data/companies.xlsx
 
-# Resume Files
+# Resume Files (keep folder, ignore PDF files)
 resumes/*.pdf
 
 # Environment Variables
