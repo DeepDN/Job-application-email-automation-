@@ -15,8 +15,12 @@
 
 ## Step 2: Project Setup
 ```bash
+# Clone the repository
+git clone https://github.com/DeepDN/Job-application-email-automation-.git
+
+
 # Navigate to project directory
-cd job_automation
+cd Job-application-email-automation-
 
 # Create virtual environment
 python3 -m venv venv
@@ -83,7 +87,7 @@ python send_emails.py
 
 ## File Structure
 ```
-job_automation/
+Job-application-email-automation-/
 ├── data/
 │   └── companies.xlsx          # Company and recruiter details
 ├── resumes/
