@@ -39,6 +39,22 @@
                                 </div>
                             </div>
                             
+                            <div class="mb-3">
+                                <label class="form-label">Email Template</label>
+                                <select class="form-control" id="template">
+                                    <option value="email_template">Professional (Default)</option>
+                                    <option value="casual_template">Casual & Friendly</option>
+                                    <option value="formal_template">Formal Business</option>
+                                    <option value="creative_template">Creative & Modern</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Schedule Email (Optional)</label>
+                                <input type="datetime-local" class="form-control" id="scheduleTime">
+                                <div class="form-text">Leave empty to send immediately</div>
+                            </div>
+                            
                             <button type="submit" class="btn btn-primary w-100">Send Emails</button>
                         </form>
                         
@@ -47,12 +63,11 @@
                 </div>
                 
                 <div class="mt-4 text-center">
-                    <p class="text-muted">
-                        <a href="https://github.com/DeepDN/Job-application-email-automation-" target="_blank">
-                            View on GitHub
-                        </a> | 
-                        Made with ❤️ for job seekers
-                    </p>
+                    <a href="/dashboard" class="btn btn-outline-primary me-2">View Analytics</a>
+                    <a href="https://github.com/DeepDN/Job-application-email-automation-" target="_blank">
+                        View on GitHub
+                    </a> | 
+                    Made with ❤️ for job seekers
                 </div>
             </div>
         </div>
@@ -90,7 +105,9 @@
                 const emailData = {
                     email: document.getElementById('email').value,
                     password: document.getElementById('password').value,
-                    filename: uploadResult.filename
+                    filename: uploadResult.filename,
+                    template: document.getElementById('template').value,
+                    schedule_time: document.getElementById('scheduleTime').value || null
                 };
                 
                 document.getElementById('result').innerHTML = '<div class="alert alert-info">Sending emails...</div>';

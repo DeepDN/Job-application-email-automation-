@@ -9,12 +9,13 @@ import time
 from datetime import datetime
 
 class EmailSender:
-    def __init__(self, email, password):
+    def __init__(self, email, password, template_name='email_template'):
         self.email = email
         self.password = password
+        self.template_name = template_name
         
     def load_template(self):
-        template_path = 'templates/email_template.html'
+        template_path = f'templates/{self.template_name}.html'
         if os.path.exists(template_path):
             with open(template_path, 'r') as f:
                 return f.read()

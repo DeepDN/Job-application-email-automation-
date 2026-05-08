@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Email Analytics Dashboard</h1>
+            <a href="/" class="btn btn-primary">Back to Main</a>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Sent</h5>
+                        <h2 class="text-primary" id="totalSent">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Today</h5>
+                        <h2 class="text-success" id="todaySent">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">This Week</h5>
+                        <h2 class="text-info" id="weekSent">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Scheduled</h5>
+                        <h2 class="text-warning" id="scheduledCount">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Template Usage</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="templateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Daily Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Top Companies</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="topCompanies"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+                
+                document.getElementById('totalSent').textContent = data.total_sent;
+                document.getElementById('todaySent').textContent = data.today_sent;
+                document.getElementById('weekSent').textContent = data.week_sent;
+                
+                // Template usage chart
+                const templateCtx = document.getElementById('templateChart').getContext('2d');
+                new Chart(templateCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data.template_usage),
+                        datasets: [{
+                            data: Object.values(data.template_usage),
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                        }]
+                    }
+                });
+                
+                // Daily activity chart
+                const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+                new Chart(dailyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(data.daily_stats),
+                        datasets: [{
+                            label: 'Emails Sent',
+                            data: Object.values(data.daily_stats),
+                            borderColor: '#36A2EB',
+                            fill: false
+                        }]
+                    }
+                });
+                
+                // Top companies
+                const companiesDiv = document.getElementById('topCompanies');
+                companiesDiv.innerHTML = Object.entries(data.top_companies)
+                    .map(([company, count]) => `<span class="badge bg-primary me-2">${company}: ${count}</span>`)
+                    .join('');
+                    
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+        
+        loadAnalytics();
+    </script>
+</body>
+</html>
