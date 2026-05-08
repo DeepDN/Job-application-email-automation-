@@ -113,7 +113,22 @@ def get_scheduled_emails():
 
 @app.route('/template')
 def download_template():
-    return send_file('static/template.xlsx', as_attachment=True)
+    template_path = 'static/template.xlsx'
+    if not os.path.exists(template_path):
+        # Create template if it doesn't exist
+        data = {
+            'Name': ['John Smith', 'Sarah Johnson'],
+            'Email': ['john@company.com', 'sarah@startup.io'],
+            'Company': ['TechCorp', 'StartupIO'],
+            'Role': ['Software Engineer', 'Frontend Developer'],
+            'Resume': ['resume_software.pdf', 'resume_frontend.pdf'],
+            'Status': ['', '']
+        }
+        df = pd.DataFrame(data)
+        os.makedirs('static', exist_ok=True)
+        df.to_excel(template_path, index=False)
+    
+    return send_file(template_path, as_attachment=True)
 
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
