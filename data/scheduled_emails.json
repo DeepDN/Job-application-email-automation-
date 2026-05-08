@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "1778234257",
+    "email_data": {
+      "filename": "template.xlsx",
+      "template": "email_template",
+      "delay": 5,
+      "batch_size": 10
+    },
+    "send_time": "2026-05-08T15:28:00",
+    "status": "failed: 'to_email'"
+  },
+  {
+    "id": "1778234417",
+    "email_data": {
+      "filename": "template.xlsx",
+      "template": "email_template",
+      "delay": 5,
+      "batch_size": 10
+    },
+    "send_time": "2026-05-08T15:31:00",
+    "status": "failed: 'to_email'"
+  },
+  {
+    "id": "1778234520",
+    "email_data": {
+      "filename": "template.xlsx",
+      "template": "email_template",
+      "delay": 5,
+      "batch_size": 10
+    },
+    "send_time": "2026-05-08T15:31:00",
+    "status": "failed: 'to_email'"
+  }
+]

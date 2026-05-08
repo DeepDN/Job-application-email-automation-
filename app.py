@@ -76,8 +76,8 @@ def upload_file():
 @app.route('/send-emails', methods=['POST'])
 def send_emails():
     data = request.json
-    email = data.get('email')
-    password = data.get('password')
+    email = data.get('email') or os.environ.get('GMAIL_EMAIL')
+    password = data.get('password') or os.environ.get('GMAIL_APP_PASSWORD')
     filename = data.get('filename')
     template = data.get('template', 'email_template')
     schedule_time = data.get('schedule_time')
@@ -85,12 +85,14 @@ def send_emails():
     batch_size = int(data.get('batch_size', 10))
     
     if not all([email, password, filename]):
-        return jsonify({'error': 'Missing required fields'}), 400
+        return jsonify({'error': 'Missing Gmail credentials or filename. Set in form or .env file'}), 400
     
     try:
         sender = EmailSender(email, password, template)
-        sender.set_delay(delay)
-        sender.set_batch_size(batch_size)
+        if hasattr(sender, 'set_delay'):
+            sender.set_delay(delay)
+        if hasattr(sender, 'set_batch_size'):
+            sender.set_batch_size(batch_size)
         
         if schedule_time:
             send_time = datetime.fromisoformat(schedule_time)
@@ -103,6 +105,12 @@ def send_emails():
             return jsonify({'message': f'Emails scheduled for {send_time}', 'job_id': job_id})
         else:
             result = sender.send_bulk_emails(f'uploads/{filename}')
+            # Ensure result has all required keys
+            if not isinstance(result, dict):
+                result = {'sent': 0, 'failed': 0, 'skipped': 0}
+            result.setdefault('sent', 0)
+            result.setdefault('failed', 0) 
+            result.setdefault('skipped', 0)
             return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

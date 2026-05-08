@@ -82,7 +82,7 @@ class EmailSender:
                 
                 self.send_email(row['Email'], subject, html_content, row.get('Resume'))
                 
-                df.at[index, 'Status'] = 'Sent'
+                df.at[index, 'Status'] = str('Sent')
                 results['sent'] += 1
                 time.sleep(self.delay)
                 
