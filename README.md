@@ -3,7 +3,7 @@
 [![Deploy to GitHub Pages](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml/badge.svg)](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A free, open-source tool to automate your job application emails with personalization and resume attachments. Inspired by [JobCopilot](https://jobcopilot.com/) but completely free for everyone.
+A free, open-source tool to automate your job application emails with personalization and resume attachments.Completely free for everyone.
 
 ## Features
 
@@ -17,7 +17,7 @@ A free, open-source tool to automate your job application emails with personaliz
 - **Web Interface** - Easy-to-use web interface with Three.js animations
 - **Email Scheduling** - Schedule emails for optimal timing
 - **Analytics Dashboard** - Track performance with interactive charts
-- **Email Validation** - Validate email addresses before sending
+- **Email Validation** - Validate email addresses before sending    
 - **Multiple Templates** - Professional, Casual, Formal, and Creative templates
 
 ## Quick Start
@@ -40,6 +40,10 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Configure environment variables
+cp .env.example .env
+# Edit .env file and set your SECRET_KEY
+
 # Run web interface
 python app.py
 ```
@@ -54,15 +58,15 @@ Visit `http://localhost:5000` in your browser.
 python send_emails.py
 ```
 
-## 📋 Setup Instructions
+##  Setup Instructions
 
 ### 1. Gmail App Password Setup
 
 1. Enable 2-Factor Authentication on your Gmail account
-2. Go to [Google Account Settings](https://myaccount.google.com/)
-3. Navigate to **Security** → **App passwords**
-4. Generate a new app password for "Mail"
-5. Save the 16-character password securely
+2. Go to [Google Account Settings](https://myaccount.google.com/u/1/apppasswords?rapt=AEjHL4OZ3TgdDpLpdMqhjqTgT5vx3CG4F-dLMHAx75yEyUW_9ORN_fo28z7hqZ2xh0HNTptKVQZmNzkgzhumM5qraJnH8-ruBS5jHvx_vHD3oN79ue3mfas)
+3. Generate a new app password for "Mail"
+4. Save the 16-character password securely
+ 
 
 ### 2. Prepare Your Data
 
@@ -94,7 +98,7 @@ resumes/
 #### Email Template
 Customize `templates/email_template.html` with your personal message.
 
-## 🌐 Deployment Options
+##  Deployment Options
 
 ### GitHub Pages (Free Hosting)
 
@@ -124,12 +128,23 @@ git push heroku main
 3. Set start command: `python app.py`
 4. Deploy automatically
 
-## 🔧 Configuration
+##  Configuration
 
-### Environment Variables (for deployment)
+### Environment Variables
+
+Create a `.env` file in the project root:
 
 ```bash
-SECRET_KEY=your-secret-key-here
+# Copy the example file
+cp .env.example .env
+
+# Edit the .env file with your preferred editor
+nano .env
+```
+
+Required variables:
+```
+SECRET_KEY=your-super-secret-key-change-this-in-production
 ```
 
 ### Local Configuration
@@ -142,7 +157,7 @@ class Config:
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Job-application-email-automation-/
@@ -166,7 +181,7 @@ Job-application-email-automation-/
         └── deploy.yml      # GitHub Actions
 ```
 
-## 🛡️ Security & Privacy
+##  Security & Privacy
 
 - **No Data Storage**: Your emails and passwords are never stored
 - **Local Processing**: All email sending happens from your machine
@@ -174,7 +189,7 @@ Job-application-email-automation-/
 - **Rate Limited**: Built-in delays prevent spam detection
 - **Gmail App Passwords**: Secure authentication method
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Here's how:
 
@@ -205,21 +220,21 @@ python -m pytest
 python app.py
 ```
 
-## 📝 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Inspired by [JobCopilot](https://jobcopilot.com/)
 - Built for the job-seeking community
 - Made with ❤️ for everyone who can't afford premium tools
 
-## 📞 Support
+##  Support
 
-- 🐛 **Bug Reports**: [Open an issue](https://github.com/DeepDN/Job-application-email-automation-/issues)
-- 💡 **Feature Requests**: [Start a discussion](https://github.com/DeepDN/Job-application-email-automation-/discussions)
-- 📧 **Email**: Create an issue for support
+-  **Bug Reports**: [Open an issue](https://github.com/DeepDN/Job-application-email-automation-/issues)
+-  **Feature Requests**: [Start a discussion](https://github.com/DeepDN/Job-application-email-automation-/discussions)
+-  **Email**: Create an issue for support
 
 ## ⭐ Star History
 
@@ -227,4 +242,4 @@ If this project helped you land a job, please consider giving it a star! ⭐
 
 ---
 
-**Made with love for job seekers worldwide. Good luck with your applications!**
+**Made with love for job seekers worldwide by Deepak Nemade (DN) Good luck with your applications!**
