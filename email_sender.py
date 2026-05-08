@@ -13,6 +13,14 @@ class EmailSender:
         self.email = email
         self.password = password
         self.template_name = template_name
+        self.delay = 2
+        self.batch_size = 10
+        
+    def set_delay(self, delay):
+        self.delay = delay
+        
+    def set_batch_size(self, batch_size):
+        self.batch_size = batch_size
         
     def load_template(self):
         template_path = f'templates/{self.template_name}.html'
@@ -76,7 +84,7 @@ class EmailSender:
                 
                 df.at[index, 'Status'] = 'Sent'
                 results['sent'] += 1
-                time.sleep(2)  # Rate limiting
+                time.sleep(self.delay)
                 
             except Exception as e:
                 results['failed'] += 1

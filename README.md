@@ -1,22 +1,26 @@
-# 🚀 Job Application Email Automation
+# Job Application Email Automation
 
 [![Deploy to GitHub Pages](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml/badge.svg)](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A free, open-source tool to automate your job application emails with personalization and resume attachments. Inspired by [JobCopilot](https://jobcopilot.com/) but completely free for everyone.
 
-## ✨ Features
+## Features
 
-- 📧 **Bulk Email Sending** - Send personalized emails to multiple recruiters
-- 📎 **Resume Attachments** - Automatically attach different resumes based on job type
-- 🎯 **Smart Personalization** - Customize emails with company and role details
-- 📊 **Excel Integration** - Manage contacts via simple Excel spreadsheet
-- 🔄 **Status Tracking** - Avoid duplicate emails with automatic status updates
-- 📝 **Email Logging** - Keep track of all sent emails with timestamps
-- ⚡ **Rate Limiting** - Built-in delays to prevent spam detection
-- 🌐 **Web Interface** - Easy-to-use web interface (optional)
+- **Bulk Email Sending** - Send personalized emails to multiple recruiters
+- **Resume Attachments** - Automatically attach different resumes based on job type
+- **Smart Personalization** - Customize emails with company and role details
+- **Excel Integration** - Manage contacts via simple Excel spreadsheet
+- **Status Tracking** - Avoid duplicate emails with automatic status updates
+- **Email Logging** - Keep track of all sent emails with timestamps
+- **Rate Limiting** - Built-in delays to prevent spam detection
+- **Web Interface** - Easy-to-use web interface with Three.js animations
+- **Email Scheduling** - Schedule emails for optimal timing
+- **Analytics Dashboard** - Track performance with interactive charts
+- **Email Validation** - Validate email addresses before sending
+- **Multiple Templates** - Professional, Casual, Formal, and Creative templates
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Web Interface (Recommended)
 
@@ -223,4 +227,4 @@ If this project helped you land a job, please consider giving it a star! ⭐
 
 ---
 
-**Made with ❤️ for job seekers worldwide. Good luck with your applications!** 🍀
+**Made with love for job seekers worldwide. Good luck with your applications!**

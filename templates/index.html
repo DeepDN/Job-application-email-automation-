@@ -5,75 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Email Automation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .form-control, .btn { backdrop-filter: blur(5px); }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+    </style>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
+    
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1 class="text-center mb-4">Job Application Email Automation</h1>
-                <p class="text-center text-muted">Free, open-source tool to automate your job application emails</p>
+            <div class="col-md-10">
+                <h1 class="text-center mb-4 text-white">Job Application Email Automation</h1>
+                <p class="text-center text-light mb-5">Professional email automation platform for job seekers</p>
                 
-                <div class="card">
-                    <div class="card-body">
-                        <form id="emailForm">
-                            <div class="mb-3">
-                                <label class="form-label">Gmail Email</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Gmail App Password</label>
-                                <input type="password" class="form-control" id="password" required>
-                                <div class="form-text">
-                                    <a href="https://support.google.com/accounts/answer/185833" target="_blank">
-                                        How to generate Gmail App Password
-                                    </a>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card glass-card">
+                            <div class="card-body">
+                                <form id="emailForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Gmail Email</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Gmail App Password</label>
+                                            <input type="password" class="form-control" id="password" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label text-white">Upload Companies Excel File</label>
+                                        <input type="file" class="form-control" id="fileInput" accept=".xlsx" required>
+                                        <div class="form-text text-light">
+                                            <a href="/template" download class="text-warning">Download Excel Template</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Email Template</label>
+                                            <select class="form-control" id="template">
+                                                <option value="email_template">Professional (Default)</option>
+                                                <option value="casual_template">Casual & Friendly</option>
+                                                <option value="formal_template">Formal Business</option>
+                                                <option value="creative_template">Creative & Modern</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Schedule Email (Optional)</label>
+                                            <input type="datetime-local" class="form-control" id="scheduleTime">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Delay Between Emails (seconds)</label>
+                                            <input type="number" class="form-control" id="emailDelay" value="5" min="1" max="60">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-white">Batch Size</label>
+                                            <input type="number" class="form-control" id="batchSize" value="10" min="1" max="50">
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100 btn-lg">Send Emails</button>
+                                </form>
+                                
+                                <div id="result" class="mt-3"></div>
+                                <div id="progress" class="mt-3" style="display: none;">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Upload Companies Excel File</label>
-                                <input type="file" class="form-control" id="fileInput" accept=".xlsx" required>
-                                <div class="form-text">
-                                    <a href="/template" download>Download Excel Template</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card glass-card mb-3">
+                            <div class="card-body text-center">
+                                <h5 class="text-white">Quick Stats</h5>
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <h3 class="text-success" id="totalSent">0</h3>
+                                        <small class="text-light">Total Sent</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h3 class="text-info" id="todayCount">0</h3>
+                                        <small class="text-light">Today</small>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Email Template</label>
-                                <select class="form-control" id="template">
-                                    <option value="email_template">Professional (Default)</option>
-                                    <option value="casual_template">Casual & Friendly</option>
-                                    <option value="formal_template">Formal Business</option>
-                                    <option value="creative_template">Creative & Modern</option>
-                                </select>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Schedule Email (Optional)</label>
-                                <input type="datetime-local" class="form-control" id="scheduleTime">
-                                <div class="form-text">Leave empty to send immediately</div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary w-100">Send Emails</button>
-                        </form>
+                        </div>
                         
-                        <div id="result" class="mt-3"></div>
+                        <div class="card glass-card">
+                            <div class="card-body">
+                                <h6 class="text-white">Features</h6>
+                                <ul class="list-unstyled text-light small">
+                                    <li>• Bulk email automation</li>
+                                    <li>• Multiple templates</li>
+                                    <li>• Email scheduling</li>
+                                    <li>• Analytics dashboard</li>
+                                    <li>• Resume attachments</li>
+                                    <li>• Rate limiting</li>
+                                </ul>
+                                <a href="/dashboard" class="btn btn-outline-light btn-sm w-100">View Dashboard</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="mt-4 text-center">
-                    <a href="/dashboard" class="btn btn-outline-primary me-2">View Analytics</a>
-                    <a href="https://github.com/DeepDN/Job-application-email-automation-" target="_blank">
+                    <a href="https://github.com/DeepDN/Job-application-email-automation-" target="_blank" class="text-light">
                         View on GitHub
                     </a> | 
-                    Made with ❤️ for job seekers
+                    <span class="text-light">Made for job seekers worldwide</span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Three.js background animation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+        
+        const spheres = [];
+        for (let i = 0; i < 50; i++) {
+            const sphere = new THREE.Mesh(geometry, material);
+            sphere.position.set(
+                (Math.random() - 0.5) * 20,
+                (Math.random() - 0.5) * 20,
+                (Math.random() - 0.5) * 20
+            );
+            spheres.push(sphere);
+            scene.add(sphere);
+        }
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            spheres.forEach(sphere => {
+                sphere.rotation.x += 0.01;
+                sphere.rotation.y += 0.01;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Load stats
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+                document.getElementById('totalSent').textContent = data.total_sent || 0;
+                document.getElementById('todayCount').textContent = data.today_sent || 0;
+            } catch (error) {
+                console.log('Stats not available');
+            }
+        }
+        loadStats();
+
+        // Form submission
         document.getElementById('emailForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -85,11 +195,12 @@
                 return;
             }
             
-            // Upload file
             const formData = new FormData();
             formData.append('file', file);
             
             try {
+                document.getElementById('progress').style.display = 'block';
+                
                 const uploadResponse = await fetch('/upload', {
                     method: 'POST',
                     body: formData
@@ -101,22 +212,21 @@
                     throw new Error(uploadResult.error);
                 }
                 
-                // Send emails
                 const emailData = {
                     email: document.getElementById('email').value,
                     password: document.getElementById('password').value,
                     filename: uploadResult.filename,
                     template: document.getElementById('template').value,
-                    schedule_time: document.getElementById('scheduleTime').value || null
+                    schedule_time: document.getElementById('scheduleTime').value || null,
+                    delay: document.getElementById('emailDelay').value,
+                    batch_size: document.getElementById('batchSize').value
                 };
                 
-                document.getElementById('result').innerHTML = '<div class="alert alert-info">Sending emails...</div>';
+                document.getElementById('result').innerHTML = '<div class="alert alert-info">Processing emails...</div>';
                 
                 const emailResponse = await fetch('/send-emails', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(emailData)
                 });
                 
@@ -125,9 +235,9 @@
                 if (emailResponse.ok) {
                     document.getElementById('result').innerHTML = 
                         `<div class="alert alert-success">
-                            Emails sent successfully!<br>
-                            Sent: ${emailResult.sent}, Failed: ${emailResult.failed}, Skipped: ${emailResult.skipped}
+                            Process completed! Sent: ${emailResult.sent}, Failed: ${emailResult.failed}, Skipped: ${emailResult.skipped}
                         </div>`;
+                    loadStats();
                 } else {
                     throw new Error(emailResult.error);
                 }
@@ -135,6 +245,8 @@
             } catch (error) {
                 document.getElementById('result').innerHTML = 
                     `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                document.getElementById('progress').style.display = 'none';
             }
         });
     </script>

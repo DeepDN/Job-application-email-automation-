@@ -6,44 +6,84 @@
     <title>Analytics Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .metric-card { transition: transform 0.3s; }
+        .metric-card:hover { transform: translateY(-5px); }
+    </style>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
+    
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Email Analytics Dashboard</h1>
-            <a href="/" class="btn btn-primary">Back to Main</a>
+            <h1 class="text-white">Email Analytics Dashboard</h1>
+            <div>
+                <button class="btn btn-outline-light me-2" onclick="exportData()">Export Data</button>
+                <a href="/" class="btn btn-primary">Back to Main</a>
+            </div>
         </div>
         
         <div class="row mb-4">
             <div class="col-md-3">
-                <div class="card text-center">
+                <div class="card glass-card metric-card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Total Sent</h5>
-                        <h2 class="text-primary" id="totalSent">0</h2>
+                        <h5 class="card-title text-white">Total Sent</h5>
+                        <h2 class="text-success" id="totalSent">0</h2>
+                        <small class="text-light">All time</small>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-center">
+                <div class="card glass-card metric-card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Today</h5>
-                        <h2 class="text-success" id="todaySent">0</h2>
+                        <h5 class="card-title text-white">Today</h5>
+                        <h2 class="text-info" id="todaySent">0</h2>
+                        <small class="text-light">Last 24 hours</small>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-center">
+                <div class="card glass-card metric-card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">This Week</h5>
-                        <h2 class="text-info" id="weekSent">0</h2>
+                        <h5 class="card-title text-white">This Week</h5>
+                        <h2 class="text-warning" id="weekSent">0</h2>
+                        <small class="text-light">Last 7 days</small>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-center">
+                <div class="card glass-card metric-card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Scheduled</h5>
-                        <h2 class="text-warning" id="scheduledCount">0</h2>
+                        <h5 class="card-title text-white">Success Rate</h5>
+                        <h2 class="text-primary" id="successRate">0%</h2>
+                        <small class="text-light">Delivery rate</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h5 class="text-white">Email Activity Timeline</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h5 class="text-white">Template Performance</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="templateChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -51,35 +91,22 @@
         
         <div class="row">
             <div class="col-md-6">
-                <div class="card">
+                <div class="card glass-card">
                     <div class="card-header">
-                        <h5>Template Usage</h5>
+                        <h5 class="text-white">Top Companies Contacted</h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="templateChart"></canvas>
+                        <div id="topCompanies" class="text-light"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card glass-card">
                     <div class="card-header">
-                        <h5>Daily Activity</h5>
+                        <h5 class="text-white">Recent Activity</h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="dailyChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Top Companies</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="topCompanies"></div>
+                        <div id="recentActivity" class="text-light"></div>
                     </div>
                 </div>
             </div>
@@ -87,55 +114,130 @@
     </div>
 
     <script>
+        // Three.js background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.05 });
+        
+        const cubes = [];
+        for (let i = 0; i < 30; i++) {
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(
+                (Math.random() - 0.5) * 15,
+                (Math.random() - 0.5) * 15,
+                (Math.random() - 0.5) * 15
+            );
+            cubes.push(cube);
+            scene.add(cube);
+        }
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cubes.forEach(cube => {
+                cube.rotation.x += 0.005;
+                cube.rotation.y += 0.005;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Load analytics data
         async function loadAnalytics() {
             try {
                 const response = await fetch('/api/analytics');
                 const data = await response.json();
                 
-                document.getElementById('totalSent').textContent = data.total_sent;
-                document.getElementById('todaySent').textContent = data.today_sent;
-                document.getElementById('weekSent').textContent = data.week_sent;
+                document.getElementById('totalSent').textContent = data.total_sent || 0;
+                document.getElementById('todaySent').textContent = data.today_sent || 0;
+                document.getElementById('weekSent').textContent = data.week_sent || 0;
                 
-                // Template usage chart
+                const successRate = data.total_sent > 0 ? Math.round((data.total_sent / (data.total_sent + (data.failed || 0))) * 100) : 0;
+                document.getElementById('successRate').textContent = successRate + '%';
+                
+                // Timeline chart
+                const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+                new Chart(timelineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(data.daily_stats || {}),
+                        datasets: [{
+                            label: 'Emails Sent',
+                            data: Object.values(data.daily_stats || {}),
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { labels: { color: 'white' } } },
+                        scales: {
+                            x: { ticks: { color: 'white' } },
+                            y: { ticks: { color: 'white' } }
+                        }
+                    }
+                });
+                
+                // Template chart
                 const templateCtx = document.getElementById('templateChart').getContext('2d');
                 new Chart(templateCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: Object.keys(data.template_usage),
+                        labels: Object.keys(data.template_usage || {}),
                         datasets: [{
-                            data: Object.values(data.template_usage),
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                            data: Object.values(data.template_usage || {}),
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
                         }]
-                    }
-                });
-                
-                // Daily activity chart
-                const dailyCtx = document.getElementById('dailyChart').getContext('2d');
-                new Chart(dailyCtx, {
-                    type: 'line',
-                    data: {
-                        labels: Object.keys(data.daily_stats),
-                        datasets: [{
-                            label: 'Emails Sent',
-                            data: Object.values(data.daily_stats),
-                            borderColor: '#36A2EB',
-                            fill: false
-                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { labels: { color: 'white' } } }
                     }
                 });
                 
                 // Top companies
                 const companiesDiv = document.getElementById('topCompanies');
-                companiesDiv.innerHTML = Object.entries(data.top_companies)
-                    .map(([company, count]) => `<span class="badge bg-primary me-2">${company}: ${count}</span>`)
-                    .join('');
+                const companies = Object.entries(data.top_companies || {});
+                companiesDiv.innerHTML = companies.length > 0 
+                    ? companies.map(([company, count]) => 
+                        `<div class="d-flex justify-content-between mb-2">
+                            <span>${company}</span>
+                            <span class="badge bg-primary">${count}</span>
+                        </div>`).join('')
+                    : '<p class="text-muted">No data available</p>';
                     
             } catch (error) {
                 console.error('Error loading analytics:', error);
             }
         }
         
+        function exportData() {
+            fetch('/api/analytics')
+                .then(response => response.json())
+                .then(data => {
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'email_analytics.json';
+                    a.click();
+                });
+        }
+        
         loadAnalytics();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
