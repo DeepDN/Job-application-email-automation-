@@ -83,6 +83,23 @@ class EmailSender:
                 self.send_email(row['Email'], subject, html_content, row.get('Resume'))
                 
                 df.at[index, 'Status'] = str('Sent')
+                
+                # Log to database if available
+                try:
+                    from models import db, EmailLog
+                    log_entry = EmailLog(
+                        name=row['Name'],
+                        email=row['Email'],
+                        company=row['Company'],
+                        role=row['Role'],
+                        template_used=self.template_name,
+                        status='sent'
+                    )
+                    db.session.add(log_entry)
+                    db.session.commit()
+                except:
+                    pass  # Fallback if database not available
+                
                 results['sent'] += 1
                 time.sleep(self.delay)
                 

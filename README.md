@@ -26,7 +26,25 @@ A free, open-source tool to automate your job application emails with personaliz
 
 Visit our hosted version: **[Job Email Automation](https://deepdn.github.io/Job-application-email-automation-/)**
 
-### Option 2: Local Installation
+### Option 2: Docker (Recommended for Production)
+
+```bash
+# Clone the repository
+git clone https://github.com/DeepDN/Job-application-email-automation-.git
+cd Job-application-email-automation-
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env file with your credentials
+
+# Run with Docker Compose
+docker-compose up -d
+
+# Access the application
+# Visit http://localhost:5000
+```
+
+### Option 3: Local Installation
 
 ```bash
 # Clone the repository
@@ -50,10 +68,10 @@ python app.py
 
 Visit `http://localhost:5000` in your browser.
 
-### Option 3: Command Line (Original)
+### Option 4: Command Line (Original)
 
 ```bash
-# Setup (same as above)
+# Setup (same as Option 3)
 # Edit send_emails.py with your credentials
 python send_emails.py
 ```
@@ -99,6 +117,73 @@ resumes/
 Customize `templates/email_template.html` with your personal message.
 
 ##  Deployment Options
+
+### Docker Deployment (Recommended)
+
+#### Prerequisites
+- Docker and Docker Compose installed
+- Git installed
+
+#### Quick Setup
+```bash
+# Clone repository
+git clone https://github.com/DeepDN/Job-application-email-automation-.git
+cd Job-application-email-automation-
+
+# Configure environment
+cp .env.example .env
+nano .env  # Edit with your settings
+
+# Start services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+#### Environment Variables for Docker
+Edit `.env` file before running:
+```bash
+SECRET_KEY=your-super-secret-key-here
+GMAIL_EMAIL=your-email@gmail.com
+GMAIL_APP_PASSWORD=your-16-character-app-password
+DATABASE_URL=postgresql://jobapp:password@db:5432/jobapp_db
+```
+
+#### Docker Commands
+```bash
+# Build and start
+docker-compose up --build -d
+
+# View application logs
+docker-compose logs app
+
+# View database logs
+docker-compose logs db
+
+# Access database
+docker-compose exec db psql -U jobapp -d jobapp_db
+
+# Backup database
+docker-compose exec db pg_dump -U jobapp jobapp_db > backup.sql
+
+# Restore database
+docker-compose exec -T db psql -U jobapp jobapp_db < backup.sql
+
+# Update application
+git pull
+docker-compose up --build -d
+```
+
+#### Persistent Data
+The following directories are mounted as volumes:
+- `./uploads` - Uploaded Excel files
+- `./resumes` - Resume PDF files  
+- `./logs` - Application logs
+- `postgres_data` - Database data (Docker volume)
 
 ### GitHub Pages (Free Hosting)
 
@@ -217,7 +302,7 @@ pip install -r requirements.txt
 python -m pytest
 
 # Run locally
-python app.py
+python3 app.py
 ```
 
 ##  License

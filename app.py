@@ -8,15 +8,28 @@ from analytics import Analytics
 from email_validator import EmailValidator
 from template_manager import TemplateManager
 from config import Config
+from models import db, EmailLog, ScheduledEmail, Company
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Initialize database
+db.init_app(app)
 
 # Initialize components
 scheduler = EmailScheduler()
 analytics = Analytics()
 validator = EmailValidator()
 template_manager = TemplateManager()
+
+# Create tables
+try:
+    with app.app_context():
+        db.create_all()
+    print("Database connected successfully")
+except Exception as e:
+    print(f"Database connection failed: {e}")
+    print("Running without database - using file-based storage")
 
 @app.route('/')
 def index():
