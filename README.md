@@ -5,6 +5,13 @@
 
 A free, open-source tool to automate your job application emails with personalization and resume attachments.Completely free for everyone.
 
+![Homepage of the application](Images/image.png)
+
+![Email Analysis Dashboard](Images/image-1.png)
+
+![Sample template example](Images/image-3.png)
+
+
 ## Features
 
 - **Bulk Email Sending** - Send personalized emails to multiple recruiters
@@ -25,6 +32,8 @@ A free, open-source tool to automate your job application emails with personaliz
 ### Option 1: Web Interface (Recommended)
 
 Visit our hosted version: **[Job Email Automation](https://deepdn.github.io/Job-application-email-automation-/)**
+
+![Github Action Page](Images/image-2.png)
 
 ### Option 2: Docker (Recommended for Production)
 
