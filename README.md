@@ -1,54 +1,69 @@
-# Job Application Email Automation System
+# 🚀 Job Application Email Automation
 
-## Prerequisites
-- Python 3.8 or higher
-- Gmail account with 2-Factor Authentication enabled
-- Internet connection
+[![Deploy to GitHub Pages](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml/badge.svg)](https://github.com/DeepDN/Job-application-email-automation-/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Step 1: Gmail App Password Setup
-1. Go to https://myaccount.google.com/
-2. Click **Security** → **2-Step Verification** (enable if not already enabled)
-3. Go back to **Security** → **App passwords**
-4. Select **Mail** from dropdown
-5. Click **Generate**
-6. Copy the 16-character password (save it securely)
+A free, open-source tool to automate your job application emails with personalization and resume attachments. Inspired by [JobCopilot](https://jobcopilot.com/) but completely free for everyone.
 
-## Step 2: Project Setup
+## ✨ Features
+
+- 📧 **Bulk Email Sending** - Send personalized emails to multiple recruiters
+- 📎 **Resume Attachments** - Automatically attach different resumes based on job type
+- 🎯 **Smart Personalization** - Customize emails with company and role details
+- 📊 **Excel Integration** - Manage contacts via simple Excel spreadsheet
+- 🔄 **Status Tracking** - Avoid duplicate emails with automatic status updates
+- 📝 **Email Logging** - Keep track of all sent emails with timestamps
+- ⚡ **Rate Limiting** - Built-in delays to prevent spam detection
+- 🌐 **Web Interface** - Easy-to-use web interface (optional)
+
+## 🚀 Quick Start
+
+### Option 1: Web Interface (Recommended)
+
+Visit our hosted version: **[Job Email Automation](https://deepdn.github.io/Job-application-email-automation-/)**
+
+### Option 2: Local Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/DeepDN/Job-application-email-automation-.git
-
-
-# Navigate to project directory
 cd Job-application-email-automation-
 
 # Create virtual environment
 python3 -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Run web interface
+python app.py
 ```
 
-## Step 3: Configuration
-Edit `send_emails.py` and update these lines:
-```python
-GMAIL_EMAIL = "your_actual_email@gmail.com"
-GMAIL_APP_PASSWORD = "your_16_character_app_password"
+Visit `http://localhost:5000` in your browser.
+
+### Option 3: Command Line (Original)
+
+```bash
+# Setup (same as above)
+# Edit send_emails.py with your credentials
+python send_emails.py
 ```
 
-## Step 4: Prepare Your Data
+## 📋 Setup Instructions
 
-### Add Resume Files
-Place your PDF resume files in `resumes/` folder:
-- `resume_devops.pdf`
-- `resume_network.pdf`
-- `resume_frontend.pdf` (add as needed)
+### 1. Gmail App Password Setup
 
-### Update Company Data
-Edit `data/companies.xlsx` with your target companies:
+1. Enable 2-Factor Authentication on your Gmail account
+2. Go to [Google Account Settings](https://myaccount.google.com/)
+3. Navigate to **Security** → **App passwords**
+4. Generate a new app password for "Mail"
+5. Save the 16-character password securely
+
+### 2. Prepare Your Data
+
+#### Excel File Format
+Create an Excel file with these columns:
 
 | Name | Email | Company | Role | Resume | Status |
 |------|-------|---------|------|--------|--------|
@@ -56,77 +71,156 @@ Edit `data/companies.xlsx` with your target companies:
 | Sarah Lee | sarah@startup.io | StartupIO | Frontend Developer | resume_frontend.pdf | |
 
 **Required Columns:**
-- **Name**: Recruiter/HR name
-- **Email**: Contact email address
+- **Name**: Recruiter/HR contact name
+- **Email**: Contact email address  
 - **Company**: Company name
 - **Role**: Job position title
-- **Resume**: Resume filename (must exist in resumes/ folder)
-- **Status**: Leave empty (will be updated to "Sent" automatically)
+- **Resume**: Resume filename (must exist in `resumes/` folder)
+- **Status**: Leave empty (auto-updated to "Sent")
 
-### Customize Email Template
-Edit `templates/email_template.html` to personalize your message and update signature with your details.
-
-## Step 5: Run the System
-```bash
-# Activate virtual environment (if not already active)
-source venv/bin/activate
-
-# Run the automation
-python send_emails.py
+#### Resume Files
+Place your PDF resumes in the `resumes/` folder:
+```
+resumes/
+├── resume_devops.pdf
+├── resume_frontend.pdf
+└── resume_data_science.pdf
 ```
 
-## What Happens When You Run
-1. Reads Excel file and skips rows with Status = "Sent"
-2. For each new row:
-   - Personalizes email template with company/role details
-   - Attaches specified resume file
-   - Sends email via Gmail SMTP
-   - Updates Status to "Sent" in Excel
-   - Logs email details with timestamp to `logs/sent_log.csv`
-   - Waits 12 seconds before next email
+#### Email Template
+Customize `templates/email_template.html` with your personal message.
 
-## File Structure
+## 🌐 Deployment Options
+
+### GitHub Pages (Free Hosting)
+
+1. Fork this repository
+2. Enable GitHub Pages in repository settings
+3. GitHub Actions will automatically deploy your site
+4. Access at `https://yourusername.github.io/Job-application-email-automation-/`
+
+### Heroku (Free Tier)
+
+```bash
+# Install Heroku CLI
+# Login to Heroku
+heroku login
+
+# Create app
+heroku create your-app-name
+
+# Deploy
+git push heroku main
+```
+
+### Railway/Render (Free Tier)
+
+1. Connect your GitHub repository
+2. Set build command: `pip install -r requirements.txt`
+3. Set start command: `python app.py`
+4. Deploy automatically
+
+## 🔧 Configuration
+
+### Environment Variables (for deployment)
+
+```bash
+SECRET_KEY=your-secret-key-here
+```
+
+### Local Configuration
+
+Edit `config.py` for local settings:
+
+```python
+class Config:
+    SECRET_KEY = 'your-secret-key'
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+```
+
+## 📁 Project Structure
+
 ```
 Job-application-email-automation-/
-├── data/
-│   └── companies.xlsx          # Company and recruiter details
-├── resumes/
-│   ├── resume_devops.pdf       # Your resume files
-│   └── resume_network.pdf
+├── app.py                     # Flask web application
+├── email_sender.py           # Email sending logic
+├── config.py                 # Configuration settings
+├── send_emails.py           # Original CLI script
+├── build_static.py          # Static site generator
+├── requirements.txt         # Python dependencies
 ├── templates/
-│   └── email_template.html     # HTML email template
-├── logs/
-│   └── sent_log.csv           # Email sending log (auto-created)
-├── venv/                      # Virtual environment
-├── send_emails.py             # Main automation script
-├── requirements.txt           # Python dependencies
-└── README.md                  # This file
+│   ├── index.html          # Web interface
+│   └── email_template.html # Email template
+├── static/
+│   └── template.xlsx       # Excel template download
+├── resumes/                # Your resume files
+├── data/                   # Excel data files
+├── logs/                   # Email logs
+├── uploads/                # Uploaded files (web)
+└── .github/
+    └── workflows/
+        └── deploy.yml      # GitHub Actions
 ```
 
-## Troubleshooting
+## 🛡️ Security & Privacy
 
-### Common Issues
-- **"Authentication failed"**: Check Gmail App Password is correct
-- **"File not found"**: Ensure resume file exists in resumes/ folder
-- **"Permission denied"**: Make sure Excel file is not open in another program
+- **No Data Storage**: Your emails and passwords are never stored
+- **Local Processing**: All email sending happens from your machine
+- **Open Source**: Full transparency - review the code yourself
+- **Rate Limited**: Built-in delays prevent spam detection
+- **Gmail App Passwords**: Secure authentication method
 
-### Safety Features
-- Automatically skips already sent emails
-- 12-second delay prevents Gmail rate limiting
-- All sent emails are logged with timestamps
-- Excel file is updated after each successful send
+## 🤝 Contributing
 
-## Commands Reference
+We welcome contributions! Here's how:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+### Development Setup
+
 ```bash
-# Setup (one-time)
+# Clone your fork
+git clone https://github.com/yourusername/Job-application-email-automation-.git
+cd Job-application-email-automation-
+
+# Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
+
+# Install development dependencies
 pip install -r requirements.txt
 
-# Daily usage
-source venv/bin/activate
-python send_emails.py
+# Run tests (if available)
+python -m pytest
 
-# Deactivate virtual environment
-deactivate
+# Run locally
+python app.py
 ```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by [JobCopilot](https://jobcopilot.com/)
+- Built for the job-seeking community
+- Made with ❤️ for everyone who can't afford premium tools
+
+## 📞 Support
+
+- 🐛 **Bug Reports**: [Open an issue](https://github.com/DeepDN/Job-application-email-automation-/issues)
+- 💡 **Feature Requests**: [Start a discussion](https://github.com/DeepDN/Job-application-email-automation-/discussions)
+- 📧 **Email**: Create an issue for support
+
+## ⭐ Star History
+
+If this project helped you land a job, please consider giving it a star! ⭐
+
+---
+
+**Made with ❤️ for job seekers worldwide. Good luck with your applications!** 🍀
