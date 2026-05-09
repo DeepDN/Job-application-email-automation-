@@ -36,3 +36,318 @@
     </div>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Application – {role} at {company}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #f4f4f0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #1a1a1a;
+      padding: 40px 20px;
+    }
+
+    .wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      background-color: #0f1923;
+      padding: 28px 36px;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      color: #e8e4dc;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .header-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #4a9eff;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #2a4a6b;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── Body ── */
+    .body {
+      background-color: #ffffff;
+      padding: 44px 40px;
+      border-left: 1px solid #e0ddd6;
+      border-right: 1px solid #e0ddd6;
+    }
+
+    .subject-line {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .role-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #0f1923;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0ede6;
+    }
+
+    .role-title span {
+      color: #4a9eff;
+    }
+
+    p {
+      margin-bottom: 18px;
+      color: #2d2d2d;
+      font-weight: 300;
+    }
+
+    .highlight {
+      font-weight: 500;
+      color: #0f1923;
+    }
+
+    /* ── Skills Strip ── */
+    .skills-strip {
+      background-color: #f8f7f4;
+      border: 1px solid #e8e4dc;
+      border-radius: 3px;
+      padding: 16px 20px;
+      margin: 26px 0;
+    }
+
+    .skills-strip-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: #0f1923;
+      background-color: #e8f0fb;
+      border: 1px solid #c5d8f5;
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CTA Block ── */
+    .cta-block {
+      background-color: #0f1923;
+      border-radius: 3px;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+
+    .cta-block p {
+      color: #c8c4bc;
+      font-size: 13.5px;
+      margin: 0;
+      font-weight: 300;
+    }
+
+    /* ── Signature ── */
+    .signature {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #f0ede6;
+    }
+
+    .sig-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f1923;
+      margin-bottom: 4px;
+    }
+
+    .sig-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #4a9eff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .sig-contact {
+      font-size: 13px;
+      color: #666;
+      font-weight: 300;
+      line-height: 1.9;
+    }
+
+    .sig-contact a {
+      color: #4a9eff;
+      text-decoration: none;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background-color: #0f1923;
+      padding: 16px 36px;
+      border-radius: 0 0 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #4a5568;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #2a3a4a;
+      letter-spacing: 0.04em;
+      text-align: center;
+      flex: 1;
+    }
+
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #4a9eff;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- ══ HEADER ══ -->
+    <div class="header">
+      <span class="header-name">Deepak Nemade</span>
+      <span class="header-tag">Job Application</span>
+    </div>
+
+    <!-- ══ BODY ══ -->
+    <div class="body">
+
+      <div class="subject-line">Applying for</div>
+      <div class="role-title">
+        <span>{role}</span> at {company}
+      </div>
+
+      <p>Dear <span class="highlight">{name}</span>,</p>
+
+      <p>
+        I am writing to apply for the <span class="highlight">{role}</span> position at
+        <span class="highlight">{company}</span>. With 4+ years of hands-on experience in
+        DevOps engineering, cloud infrastructure, and network security, I am confident I can
+        deliver immediate value to your team.
+      </p>
+
+      <p>
+        Most recently, I led the complete DevOps lifecycle for
+        <span class="highlight">CREDEBL</span>, an open-source Self-Sovereign Identity platform
+        under the <span class="highlight">Linux Foundation</span> — owning CI/CD pipelines,
+        Terraform infrastructure-as-code, Docker containerization on AWS ECS with Fargate,
+        and full-stack observability via SigNoz across dev, QA, and production environments.
+        This work reduced manual deployment effort by over <span class="highlight">80%</span>
+        and cut environment provisioning from days to under <span class="highlight">30 minutes</span>.
+      </p>
+
+      <!-- ── Skills Strip ── -->
+      <div class="skills-strip">
+        <div class="skills-strip-label">Core Technologies</div>
+        <div class="skills-list">
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Terraform</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Kubernetes</span>
+          <span class="skill-tag">Jenkins</span>
+          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">SigNoz</span>
+          <span class="skill-tag">NATS</span>
+          <span class="skill-tag">Shell Scripting</span>
+          <span class="skill-tag">GCP</span>
+        </div>
+      </div>
+
+      <p>
+        Beyond platform engineering, I hold <span class="highlight">CCNA, CCNP,</span> and
+        <span class="highlight">CCNA Security</span> certifications and have hands-on experience
+        with enterprise networking — giving me an end-to-end perspective from physical infrastructure
+        to cloud-native deployment.
+      </p>
+
+      <!-- ── CTA Block ── -->
+      <div class="cta-block">
+        <p>
+          Please find my resume attached. I would welcome the opportunity to discuss how my
+          background aligns with
+          <span style="color:#e8e4dc; font-weight:500;">{company}</span>'s
+          engineering goals and explore how I can contribute to your team.
+        </p>
+      </div>
+
+      <p>Thank you for your time and consideration. I look forward to hearing from you.</p>
+
+      <!-- ── Signature ── -->
+      <div class="signature">
+        <div class="sig-name">Deepak Nemade</div>
+        <div class="sig-title">DevOps Engineer &nbsp;|&nbsp; Cloud &amp; Infrastructure</div>
+        <div class="sig-contact">
+          +91 7709443422<br>
+          <a href="mailto:nemadedeepak1111@gmail.com">nemadedeepak1111@gmail.com</a><br>
+          <a href="https://linkedin.com/in/deepaknemade">linkedin.com/in/deepaknemade</a><br>
+          Pune, Maharashtra, India
+        </div>
+      </div>
+
+    </div>
+    <!-- ══ END BODY ══ -->
+
+    <!-- ══ FOOTER ══ -->
+    <div class="footer">
+      <span class="footer-note">Resume attached as PDF</span>
+      <div class="footer-dot"></div>
+      <span class="footer-note">Confidential Application</span>
+    </div>
+
+  </div>
+</body>
+</html>
