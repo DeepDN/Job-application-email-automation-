@@ -15,6 +15,7 @@ class EmailSender:
         self.template_name = template_name
         self.delay = 2
         self.batch_size = 10
+        self.app = None
         
     def set_delay(self, delay):
         self.delay = delay
@@ -84,21 +85,24 @@ class EmailSender:
                 
                 df.at[index, 'Status'] = str('Sent')
                 
-                # Log to database if available
-                try:
-                    from models import db, EmailLog
-                    log_entry = EmailLog(
-                        name=row['Name'],
-                        email=row['Email'],
-                        company=row['Company'],
-                        role=row['Role'],
-                        template_used=self.template_name,
-                        status='sent'
-                    )
-                    db.session.add(log_entry)
-                    db.session.commit()
-                except:
-                    pass  # Fallback if database not available
+                # Log to database
+                if self.app:
+                    try:
+                        from models import db, EmailLog
+                        with self.app.app_context():
+                            log_entry = EmailLog(
+                                name=str(row['Name']),
+                                email=str(row['Email']),
+                                company=str(row['Company']),
+                                role=str(row['Role']),
+                                template_used=self.template_name,
+                                status='sent',
+                                sent_at=datetime.utcnow()
+                            )
+                            db.session.add(log_entry)
+                            db.session.commit()
+                    except Exception as db_error:
+                        print(f"Database logging failed: {str(db_error)}")
                 
                 results['sent'] += 1
                 time.sleep(self.delay)
