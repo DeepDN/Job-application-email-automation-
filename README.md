@@ -65,7 +65,7 @@ No subscriptions. No data sent to third parties. Everything runs on your own mac
 
 ### Option 2: Docker (Recommended for Production)
 
-**Docker (recommended for local use)**
+**Docker**
 
 ```bash
 git clone https://github.com/DeepDN/Job-application-email-automation-.git
@@ -119,7 +119,7 @@ Create an `.xlsx` file with the following columns:
 ### 3. Resume Files
 
 Place all resume PDFs inside the `resumes/` directory. File names must match exactly what is listed in the Excel sheet.
-```
+```text
 resumes/
 ├── resume_devops.pdf
 ├── resume_frontend.pdf
@@ -269,7 +269,7 @@ Pull requests are welcome. For significant changes, please open an issue first t
 **Getting started:**
 
 ```bash
-git clone https://github.com/yourusername/Job-application-email-automation-.git
+git clone +git clone https://github.com/DeepDN/Job-application-email-automation-.git
 cd Job-application-email-automation-
 
 python3 -m venv venv
