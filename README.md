@@ -210,6 +210,12 @@ docker-compose exec db pg_dump -U jobapp jobapp_db > backup.sql
 # Restore
 docker-compose exec -T db psql -U jobapp jobapp_db < backup.sql
 ```
+**Verify Database:**
+
+Check stored data:
+```bash
+docker compose exec db psql -U jobapp -d jobapp_db -c "SELECT * FROM email_log;"
+```
 
 **Persistent volumes:**
 
