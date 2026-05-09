@@ -31,11 +31,11 @@ No subscriptions. No data sent to third parties. Everything runs on your own mac
 
 ---
 
-![Homepage of the application](Images/image.png)
+![Homepage of the application](Images/page1.png)
 
-![Email Analysis Dashboard](Images/image-1.png)
+![Email Analysis Dashboard](Images/page2.png)
 
-![Sample template example](Images/image-3.png)
+![Sample template example](Images/database.png)
 
 
 ## Features
@@ -61,7 +61,6 @@ No subscriptions. No data sent to third parties. Everything runs on your own mac
 [https://deepdn.github.io/Job-application-email-automation-/](https://deepdn.github.io/Job-application-email-automation-/)
 
 
-![Github Action Page](Images/image-2.png)
 
 ### Option 2: Docker (Recommended for Production)
 
