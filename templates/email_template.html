@@ -254,20 +254,53 @@
 
       <!-- ── Skills Strip ── -->
       <div class="skills-strip">
-        <div class="skills-strip-label">Core Technologies</div>
-        <div class="skills-list">
-          <span class="skill-tag">AWS</span>
-          <span class="skill-tag">Terraform</span>
-          <span class="skill-tag">Docker</span>
-          <span class="skill-tag">Kubernetes</span>
-          <span class="skill-tag">Jenkins</span>
-          <span class="skill-tag">GitHub Actions</span>
-          <span class="skill-tag">SigNoz</span>
-          <span class="skill-tag">NATS</span>
-          <span class="skill-tag">Shell Scripting</span>
-          <span class="skill-tag">GCP</span>
-        </div>
-      </div>
+  <div class="skills-strip-label">Core Technologies</div>
+
+  <div class="skills-list">
+    <span class="skill-tag">AWS</span>
+    <span class="skill-tag">Terraform</span>
+    <span class="skill-tag">Docker</span>
+    <span class="skill-tag">Kubernetes</span>
+    <span class="skill-tag">Jenkins</span>
+
+    <span class="skill-tag">GitHub Actions</span>
+    <span class="skill-tag">SigNoz</span>
+    <span class="skill-tag">NATS</span>
+    <span class="skill-tag">Shell Scripting</span>
+    <span class="skill-tag">GCP</span>
+  </div>
+</div>
+
+<style>
+  .skills-strip {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .skills-strip-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 700px;
+  }
+
+  .skill-tag {
+    flex: 0 0 calc(20% - 12px); /* 5 items per row */
+    text-align: center;
+    padding: 10px 14px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-sizing: border-box;
+  }
+</style>
 
       <p>
         Beyond platform engineering, I hold <span class="highlight">CCNA, CCNP,</span> and
